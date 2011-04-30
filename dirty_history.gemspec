@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
     "lib/generators/dirty_history/install_generator.rb",
     "lib/generators/dirty_history/templates/migration.rb",
     "test/helper.rb",
-    "test/test_dirty-bits.rb"
+    "test/test_dirty_history.rb"
   ]
   s.homepage = %q{http://github.com/GAV1N/dirty_history}
   s.licenses = ["MIT"]
