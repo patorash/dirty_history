@@ -1,4 +1,4 @@
-module DirtyHistory
+module DH
   module Generators
     class InstallGenerator < ActiveRecord::Generators::Base          
       
