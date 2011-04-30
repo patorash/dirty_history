@@ -25,7 +25,7 @@ Gem::Specification.new do |s|
     "Rakefile",
     "VERSION",
     "dirty_history.gemspec",
-    "lib/dirty_history.rb",
+    "lib/dh.rb",
     "lib/dirty_history/dirty_history.rb",
     "lib/dirty_history/dirty_history_mixin.rb",
     "lib/generators/dirty_history/install_generator.rb",
