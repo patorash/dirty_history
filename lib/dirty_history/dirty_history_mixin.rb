@@ -42,13 +42,13 @@ module DirtyHistoryMixin
             end
           end
         end    
-        include DirtyHistoryCallbacks::ObjectInstanceMethods
+        include DirtyHistoryMixin::ObjectInstanceMethods
       end
     end # has_dirty_history
     
     def creates_dirty_history
       has_many        :dirty_history_records, :as => :creator, :class_name => "DirtyHistory"
-      include DirtyHistoryCallbacks::CreatorInstanceMethods
+      include DirtyHistoryMixin::CreatorInstanceMethods
     end # creates_dirty_history
   end # ClassMethods
   
