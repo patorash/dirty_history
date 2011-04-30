@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
     "dirty_history.gemspec",
     "lib/dh.rb",
     "lib/dirty_history/dirty_history.rb",
-    "lib/dirty_history/dirty_history_mixin.rb",
+    "lib/dirty_history/mixin.rb",
     "lib/generators/dirty_history/install_generator.rb",
     "lib/generators/dirty_history/templates/migration.rb",
     "test/helper.rb",
@@ -40,7 +40,7 @@ Gem::Specification.new do |s|
   s.summary = %q{Easily keep track of changes to specific model fields.}
   s.test_files = [
     "test/helper.rb",
-    "test/test_dirty-bits.rb"
+    "test/test_dirty_history.rb"
   ]
 
   if s.respond_to? :specification_version then
