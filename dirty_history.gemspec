@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
     "README.rdoc",
     "Rakefile",
     "VERSION",
+    "dirty_history.gemspec",
     "lib/dirty_history.rb",
     "lib/dirty_history/dirty_history.rb",
     "lib/dirty_history/dirty_history_mixin.rb",
