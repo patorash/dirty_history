@@ -77,3 +77,7 @@ module DH
   
   end # Mixin
 end
+
+ActiveRecord::Base.class_eval do
+  include DH::Mixin
+end

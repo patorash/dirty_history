@@ -10,7 +10,3 @@ end
 require 'rails'
 require "dirty_history/dirty_history" 
 require "dirty_history/mixin" 
-                                      
-debugger
-
-ActiveRecord::Base.send(:include, DH::Mixin)
