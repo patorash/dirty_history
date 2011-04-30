@@ -15,8 +15,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "dirty_history"
   gem.homepage = "http://github.com/GAV1N/dirty_history"
   gem.license = "MIT"
-  gem.summary = "Dirty History is a simple gem that allows you to keep track of changes to specific fields in your Rails models using the ActiveRecord::Dirty module."
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = "Easily keep track of changes to specific model fields."
+  gem.description = "Dirty History is a simple gem that allows you to keep track of changes to specific fields in your Rails models using the ActiveRecord::Dirty module."
   gem.email = "gavin.todes@gmail.com"
   gem.authors = ["Gavin Todes"]
   # Include your dependencies below. Runtime dependencies are required when using your gem,
