@@ -1,0 +1,47 @@
+= dirty_history
+
+Dirty History allows you to keep track of changes to specific fields in your Rails models using the ActiveRecord::Dirty module.
+                                                                                                                               
+== Installation
+
+Add dirty_history to your Gemfile:
+  
+  gem "dirty_history"
+  
+Install it using Bundler
+  
+  bundle install
+
+Generate the Dirty History migration and migrate your database
+  
+  rails generate dirty_history:install  
+  
+  rake db:migrate
+  
+== Usage
+
+Dirty History must be set up within the model (or models) you want to use. Simply call the dirty_history class method on your model(s), passing the attributes that you would like to track changes to.
+
+We're assuming here you want to use Dirty History in your User model to keep track of changes to email, first_name, and last_name fields, as outlined below:
+
+  class User < ActiveRecord::Base
+    has_dirty_history :email, :first_name, :last_name
+  end
+            
+# TODO: add more documentation
+
+== Contributing to dirty-bits
+ 
+* Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
+* Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
+* Fork the project
+* Start a feature/bugfix branch
+* Commit and push until you are happy with your contribution
+* Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
+* Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
+
+== Copyright
+
+Copyright (c) 2011 Gavin Todes. See LICENSE.txt for
+further details.
+
