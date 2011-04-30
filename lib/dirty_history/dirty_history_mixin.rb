@@ -32,8 +32,12 @@ module DirtyHistoryMixin
               self.dirty_history_columns << arg unless self.dirty_history_columns.include?(arg)
             elsif arg.is_a?(Hash)                      
               creator_proc = arg.delete(:creator)
-              send :define_method, "creator_for_dirty_history" do
-                creator_proc.is_a?(Proc) ? creator_proc.call rescue nil : nil
+              send :define_method, "creator_for_dirty_history" do 
+                begin
+                  creator_proc.is_a?(Proc) ? creator_proc.call : nil
+                rescue
+                  nil
+                end
               end
             end
           end
