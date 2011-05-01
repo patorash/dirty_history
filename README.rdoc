@@ -14,7 +14,7 @@ Install it using Bundler
 
 Generate the Dirty History migration and migrate your database
   
-  rails generate dirty_history:install  
+  rails generate d_h:install
   
   rake db:migrate
   
