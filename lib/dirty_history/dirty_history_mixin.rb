@@ -76,7 +76,7 @@ module DirtyHistory
                                   :column_type  => self.class.columns_hash[col.to_s],
                                   :old_value    => vals[0],
                                   :new_value    => vals[1]
-        }.each { |dirty_history_record| self.dirty_history_records < dirty_history_record }
+        }.each { |dirty_history_record| self.dirty_history_records << dirty_history_record }
       end    
     end # ObjectInstanceMethods
 
