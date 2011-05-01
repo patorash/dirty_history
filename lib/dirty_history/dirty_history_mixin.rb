@@ -19,7 +19,7 @@ module DirtyHistory
       # pass an optional proc to assign a creator to the dirty_history object
       # example usage:
       # class User < ActiveRecord::Base
-      #   has_dirty_history :email, :first_name, :last_name, :creator => { User.current_user }
+      #   has_dirty_history :email, :first_name, :last_name, :creator => proc { User.current_user }
       # end
   
       def has_dirty_history *args 

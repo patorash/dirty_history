@@ -3,7 +3,8 @@ class DirtyHistoryRecord < ActiveRecord::Base
   belongs_to :object,   :polymorphic => true
   validates_presence_of :object_type, :object_id, :column_name, :column_type, :old_value, :new_value
   
-  scope :created_by,  lambda { |creator| where(:creator_id => creator.id, :creator_type => creator.class.name) }
+  scope :created_by,      lambda { |creator| where(:creator_id => creator.id, :creator_type => creator.class.name) }
+  scope :for_object_type, lambda { |object_type| where(:object_type => object_type.to_s.classify) }
     
   [:new_value, :old_value].each do |attribute|
     define_method "#{attribute}" do 

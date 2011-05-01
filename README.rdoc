@@ -20,14 +20,36 @@ Generate the Dirty History migration and migrate your database
   
 == Usage
 
-Dirty History must be set up within the model (or models) you want to use. Simply call the dirty_history class method on your model(s), passing the attributes that you would like to track changes to.
+Dirty History must be set up within the model (or models) you want to use. Simply call the has_dirty_history class method on your model(s), passing the attributes that you would like to track changes to.
 
-We're assuming here you want to use Dirty History in your User model to keep track of changes to email, first_name, and last_name fields, as outlined below:
+For example, assume you want to use Dirty History in your Widget model to keep track of changes to name and price fields as outlined below:
 
+  class Widget < ActiveRecord::Base
+    has_dirty_history :name, :price
+  end        
+  
+You can optionally track the creator of dirty history records by passing a creator proc that will be called when a DirtyHistoryRecord is being saved for your object.
+
+  class Widget < ActiveRecord::Base
+    has_dirty_history :name, :price, :creator => proc { User.current_user }
+  end      
+  
+  widget = Widget.last                  
+  user   = User.find(123)
+  widget.dirty_history_records.created_by(user) # returns all changes to the widget performed by the specified user
+  
   class User < ActiveRecord::Base
-    has_dirty_history :email, :first_name, :last_name
-  end
-            
+    creates_dirty_history
+  end    
+  
+  user = User.find(123)
+  user.dirty_history_records # returns changes made by the user
+  
+Now, suppose you want to access all of a user's changes to objects of type Foo:
+
+  user = User.find(123)
+  user.dirty_history_records.for_object_type("Foo") # returns the user's changes made only objects of type Foo
+
 # TODO: add more documentation
 
 == Contributing to dirty-bits
