@@ -19,7 +19,7 @@ Generate the Dirty History migration and migrate your database
   
 == Usage
 
-Dirty History must be set up within the model (or models) you want to use. Simply call the has_dirty_history class method on your model(s), passing the attributes that you would like to track changes to.
+Dirty History must be set up within the ActiveRecord model (or models) you want to use. Simply call the has_dirty_history class method on your model(s), passing the attributes that you would like to track changes to.
 
 For example, assume you want to use Dirty History in your Widget model to keep track of changes to name and price fields as outlined below:
 
