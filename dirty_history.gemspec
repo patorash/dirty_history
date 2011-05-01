@@ -28,8 +28,8 @@ Gem::Specification.new do |s|
     "lib/dirty_history.rb",
     "lib/dirty_history/dirty_history.rb",
     "lib/dirty_history/dirty_history_mixin.rb",
-    "lib/generators/active_record/dirty_history_generator.rb",
-    "lib/generators/active_record/templates/migration.rb",
+    "lib/generators/dirty_history/migration_generator.rb",
+    "lib/generators/dirty_history/templates/migration.rb",
     "test/helper.rb",
     "test/test_dirty_history.rb"
   ]

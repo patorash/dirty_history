@@ -2,7 +2,7 @@ require 'rails/generators/active_record'
 
 module ActiveRecord
   module Generators
-    class DirtyHistoryGenerator < ActiveRecord::Generators::Base
+    class MigrationGenerator < ActiveRecord::Generators::Base
       source_root File.expand_path("../templates", __FILE__)
 
 
