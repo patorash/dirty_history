@@ -15,7 +15,6 @@ Install it using Bundler
 Generate the Dirty History migration and migrate your database
   
   rails generate dirty_history:migration
-  
   rake db:migrate
   
 == Usage
@@ -36,19 +35,22 @@ You can optionally track the creator of dirty history records by passing a creat
   
   widget = Widget.last                  
   user   = User.find(123)
-  widget.dirty_history_records.created_by(user) # returns all changes to the widget performed by the specified user
+  widget.dirty_history_records.created_by(user) 
+  # => returns all changes to the widget performed by the specified user
   
   class User < ActiveRecord::Base
     creates_dirty_history
   end    
   
   user = User.find(123)
-  user.dirty_history_records # returns changes made by the user
+  user.dirty_history_records 
+  # => returns changes made by the specified user
   
 Now, suppose you want to access all of a user's changes to objects of type Foo:
 
   user = User.find(123)
-  user.dirty_history_records.for_object_type("Foo") # returns the user's changes made only objects of type Foo
+  user.dirty_history_records.for_object_type("Foo") 
+  # => returns the user's changes made only objects of type Foo
 
 # TODO: add more documentation
 
