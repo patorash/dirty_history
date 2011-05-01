@@ -33,10 +33,19 @@ You can optionally track the creator of dirty history records by passing a creat
     has_dirty_history :name, :price, :creator => proc { User.current_user }
   end      
   
-  widget = Widget.last       
-  
+  widget = Widget.last 
+  widget.name
+    # => "Box"
+  widget.name = "Heart Shaped Box"
+  widget.save 
   widget.dirty_history_records
     # => returns all changes to the widget
+
+  dirty_history = widget.dirty_history_records.last
+  dirty_history.old_value
+    # => "Thing"
+  dirty_history.new_value
+    # => "Heard Shaped Box"
              
   user   = User.find(123)
   widget.dirty_history_records.created_by(user) 
