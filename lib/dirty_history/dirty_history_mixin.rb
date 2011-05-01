@@ -71,7 +71,7 @@ module DirtyHistory
           changes_hash
         }
         new_dirty_history.map { |col,vals| 
-          DirtyHistoryRecord.new  :creator      => self.creator_for_dirty_history rescue nil,
+          DirtyHistoryRecord.new  :creator      => (self.creator_for_dirty_history rescue nil),
                                   :column_name  => col,
                                   :column_type  => self.class.columns_hash[col.to_s],
                                   :old_value    => vals[0],
