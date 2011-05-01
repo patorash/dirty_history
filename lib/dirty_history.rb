@@ -1,4 +1,10 @@
-require "dirty_history/dirty_history_record" 
-require "dirty_history/dirty_history_mixin"          
+require "active_record"
 
-ActiveRecord::Base.send :include, DirtyHistoryMixin
+$LOAD_PATH.unshift(File.dirname(__FILE__))
+
+require "dirty_history/dirty_history_record" 
+require "dirty_history/dirty_history_mixin"  
+
+$LOAD_PATH.shift
+
+ActiveRecord::Base.send :include, DirtyHistory::Mixin
