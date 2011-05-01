@@ -1,6 +1,6 @@
 = Dirty History
 
-Dirty History is a gem that allows you to keep track of changes to specific fields in your Rails models using the ActiveRecord::Dirty module.
+Dirty History is a simple gem that allows you to keep track of changes to specific fields in your Rails models using the ActiveRecord::Dirty module.
                                                                                                                                
 == Installation
 
