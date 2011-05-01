@@ -1,4 +1,4 @@
-= dirty_history
+= Dirty History
 
 Dirty History is a gem that allows you to keep track of changes to specific fields in your Rails models using the ActiveRecord::Dirty module.
                                                                                                                                
@@ -33,10 +33,14 @@ You can optionally track the creator of dirty history records by passing a creat
     has_dirty_history :name, :price, :creator => proc { User.current_user }
   end      
   
-  widget = Widget.last                  
+  widget = Widget.last       
+  
+  widget.dirty_history_records
+    # => returns all changes to the widget
+             
   user   = User.find(123)
   widget.dirty_history_records.created_by(user) 
-  # => returns all changes to the widget performed by the specified user
+    # => returns all changes to the widget performed by the specified user
   
   class User < ActiveRecord::Base
     creates_dirty_history
@@ -44,17 +48,17 @@ You can optionally track the creator of dirty history records by passing a creat
   
   user = User.find(123)
   user.dirty_history_records 
-  # => returns changes made by the specified user
+    # => returns changes made by the specified user
   
 Now, suppose you want to access all of a user's changes to objects of type Foo:
 
   user = User.find(123)
   user.dirty_history_records.for_object_type("Foo") 
-  # => returns the user's changes made only objects of type Foo
+    # => returns the user's changes made only objects of type Foo
 
 # TODO: add more documentation
 
-== Contributing to dirty-bits
+== Contributing to Dirty History
  
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
 * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
