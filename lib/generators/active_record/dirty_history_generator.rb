@@ -7,7 +7,7 @@ module ActiveRecord
 
 
       def copy_dirty_history_migration
-        migration_template "migration.rb", "db/migrate/create_dirty_history"
+        migration_template "migration.rb", "db/migrate/create_dirty_history.rb"
       end
 
     end
