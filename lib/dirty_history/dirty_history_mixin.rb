@@ -25,7 +25,7 @@ module DirtyHistory
       def has_dirty_history *args 
         # Mix in the module, but ensure to do so just once.
         metaclass = (class << self; self; end)
-        return if metaclass.included_modules.include?(DirtyHistoryMixin::ObjectInstanceMethods)
+        return if metaclass.included_modules.include?(DirtyHistory::Mixin::ObjectInstanceMethods)
 
         has_many        :dirty_history_records, :as => :object
         before_save     :add_dirty_history
@@ -49,17 +49,17 @@ module DirtyHistory
               end
             end
           end
-          include DirtyHistoryMixin::ObjectInstanceMethods
+          include DirtyHistory::Mixin::ObjectInstanceMethods
         end
       end # has_dirty_history
   
       def creates_dirty_history 
         # Mix in the module, but ensure to do so just once.
         metaclass = (class << self; self; end)
-        return if metaclass.included_modules.include?(DirtyHistoryMixin::CreatorInstanceMethods)
+        return if metaclass.included_modules.include?(DirtyHistory::Mixin::CreatorInstanceMethods)
       
         has_many        :dirty_history_records, :as => :creator
-        include DirtyHistoryMixin::CreatorInstanceMethods
+        include DirtyHistory::Mixin::CreatorInstanceMethods
       end # creates_dirty_history
     end # ClassMethods
 
@@ -89,4 +89,4 @@ module DirtyHistory
 end  # DirtyHistory
 
 
-ActiveRecord::Base.send :include, DirtyHistoryMixin
+ActiveRecord::Base.send :include, DirtyHistory::Mixin
