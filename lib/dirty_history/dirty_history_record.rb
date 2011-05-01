@@ -19,6 +19,7 @@ class DirtyHistoryRecord < ActiveRecord::Base
   
   def val_to_col_type attribute
     val_as_string = self[attribute]
+    return nil if val_as_string.nil?
     case self[:column_type].to_sym
     when :integer, :boolean
       val_as_string.to_i
