@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
     "VERSION",
     "dirty_history.gemspec",
     "lib/dirty_history.rb",
-    "lib/dirty_history/dirty_history.rb",
+    "lib/dirty_history/dirty_history_record.rb",
     "lib/dirty_history/dirty_history_mixin.rb",
     "lib/generators/dirty_history/migration_generator.rb",
     "lib/generators/dirty_history/templates/migration.rb",

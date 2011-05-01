@@ -25,7 +25,7 @@ module DirtyHistoryMixin
       metaclass = (class << self; self; end)
       return if metaclass.included_modules.include?(DirtyHistoryMixin::ObjectInstanceMethods)
 
-      has_many        :dirty_history_records, :as => :object, :class_name => "DirtyHistory"
+      has_many        :dirty_history_records, :as => :object
       before_save     :add_dirty_history
       cattr_accessor  :dirty_history_columns
 
@@ -56,7 +56,7 @@ module DirtyHistoryMixin
       metaclass = (class << self; self; end)
       return if metaclass.included_modules.include?(DirtyHistoryMixin::CreatorInstanceMethods)
       
-      has_many        :dirty_history_records, :as => :creator, :class_name => "DirtyHistory"
+      has_many        :dirty_history_records, :as => :creator
       include DirtyHistoryMixin::CreatorInstanceMethods
     end # creates_dirty_history
   end # ClassMethods
@@ -69,12 +69,12 @@ module DirtyHistoryMixin
         changes_hash
       }
       new_dirty_history.map { |col,vals| 
-        DirtyHistory.new  :creator      => self.creator_for_dirty_history,
-                          :column_name  => col,
-                          :column_type  => self.class.columns_hash[col.to_s],
-                          :old_value    => vals[0],
-                          :new_value    => vals[1]
-      }.each { |dirty_history| self.dirty_history_records < dirty_history }
+        DirtyHistoryRecord.new  :creator      => self.creator_for_dirty_history,
+                                :column_name  => col,
+                                :column_type  => self.class.columns_hash[col.to_s],
+                                :old_value    => vals[0],
+                                :new_value    => vals[1]
+      }.each { |dirty_history_record| self.dirty_history_records < dirty_history_record }
     end    
   end # ObjectInstanceMethods
 

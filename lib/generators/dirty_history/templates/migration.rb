@@ -1,6 +1,6 @@
-class CreateDirtyHistory < ActiveRecord::Migration
+class CreateDirtyHistoryRecords < ActiveRecord::Migration
   def self.up
-    create_table :dirty_history do |t|                                           
+    create_table :dirty_history_records do |t|                                           
       t.references :creator,  :polymorphic => true # creates creator_type and creator_id field
       t.references :object,   :polymorphic => true # creates object_type and object_id field            
       t.string     :column_name, :length => 64
@@ -10,11 +10,11 @@ class CreateDirtyHistory < ActiveRecord::Migration
     
       t.datetime   :created_at
     end
-    add_index :dirty_history, [:creator_id, :creator_type]
-    add_index :dirty_history, [:object_id,  :object_type]
+    add_index :dirty_history_records, [:creator_id, :creator_type]
+    add_index :dirty_history_records, [:object_id,  :object_type]
   end
 
   def self.down
-    drop_table :dirty_history
+    drop_table :dirty_history_records
   end
 end
