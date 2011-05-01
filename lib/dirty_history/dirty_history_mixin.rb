@@ -1,8 +1,8 @@
 module DirtyHistoryMixin
 
-  def self.included(base)
+  def self.included base
     base.class_eval do 
-      extend(ClassMethods)
+      extend ClassMethods
     end
   end       
 
@@ -83,6 +83,5 @@ module DirtyHistoryMixin
   end # CreatorInstanceMethods
   
 end  # DirtyHistoryMixin
-
 
 ActiveRecord::Base.send :include, DirtyHistoryMixin

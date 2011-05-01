@@ -1,4 +1,3 @@
-require "rails"
 require "dirty_history/dirty_history" 
 require "dirty_history/dirty_history_mixin"          
 
