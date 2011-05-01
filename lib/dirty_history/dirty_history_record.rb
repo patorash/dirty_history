@@ -11,7 +11,7 @@ class DirtyHistoryRecord < ActiveRecord::Base
       val_to_col_type(attribute)
     end
     define_method "#{attribute}=" do |val|
-      self[attribute] = val.to_s
+      self[attribute] = val.nil? ? nil : val.to_s
       instance_variable_set "@#{attribute}", val
     end
   end 
