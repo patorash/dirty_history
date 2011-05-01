@@ -34,7 +34,7 @@ module DirtyHistory
         self.dirty_history_columns ||= []
     
         if args.present?
-          args.each do |arg|
+          args.each do |arg| 
             if [String,Symbol].include?(arg.class)     
               arg = arg.to_sym
               self.dirty_history_columns << arg unless self.dirty_history_columns.include?(arg)
@@ -71,7 +71,7 @@ module DirtyHistory
           changes_hash
         }
         new_dirty_history.map { |col,vals| 
-          DirtyHistoryRecord.new  :creator      => self.creator_for_dirty_history,
+          DirtyHistoryRecord.new  :creator      => self.creator_for_dirty_history rescue nil,
                                   :column_name  => col,
                                   :column_type  => self.class.columns_hash[col.to_s],
                                   :old_value    => vals[0],
