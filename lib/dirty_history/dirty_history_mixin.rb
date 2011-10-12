@@ -1,15 +1,17 @@
-module DirtyHistory
-  
+module DirtyHistory 
+   
   module Mixin
 
+    class CreatorProcError < StandardError ; end
+    
     def self.included base
       base.class_eval do 
         extend ClassMethods
       end
     end       
 
-    module ClassMethods        
-    
+    module ClassMethods  
+      
       # call the dirty_history class method on models with fields that you want to track changes on.
       # example usage:
       # class User < ActiveRecord::Base
@@ -27,9 +29,13 @@ module DirtyHistory
         metaclass = (class << self; self; end)
         return if metaclass.included_modules.include?(DirtyHistory::Mixin::ObjectInstanceMethods)
 
-        has_many        :dirty_history_records, :as => :object
-        before_save     :add_dirty_history
-        cattr_accessor  :dirty_history_columns
+        has_many        :dirty_history_records, :as => :object    
+        before_save     :set_dirty_history_changes
+        after_save      :save_dirty_history
+        
+        attr_accessor   :dirty_history_changes, :initialize_dirty_history
+        cattr_accessor  :dirty_history_columns  
+
 
         self.dirty_history_columns ||= []
     
@@ -44,7 +50,7 @@ module DirtyHistory
                 begin
                   creator_proc.is_a?(Proc) ? creator_proc.call : nil
                 rescue
-                  nil
+                  raise DirtyHistory::Mixin::CreatorProcError
                 end
               end
             end
@@ -58,26 +64,48 @@ module DirtyHistory
         metaclass = (class << self; self; end)
         return if metaclass.included_modules.include?(DirtyHistory::Mixin::CreatorInstanceMethods)
       
-        has_many        :dirty_history_records, :as => :creator
+        has_many :dirty_history_records, :as => :creator
+        
         include DirtyHistory::Mixin::CreatorInstanceMethods
       end # creates_dirty_history
     end # ClassMethods
 
     module ObjectInstanceMethods
-      def add_dirty_history 
-        return true unless self.changed?                                               
-        new_dirty_history = self.class.dirty_history_columns.inject({}) { |changes_hash, col| 
-          changes_hash[col] = self.send("#{col}_change") if self.send("#{col}_changed?")
+      
+      def set_dirty_history_changes                    
+        return true unless self.new_record? || self.changed? 
+        
+        self.dirty_history_changes    = self.class.dirty_history_columns.inject({}) do |changes_hash, column_name| 
+          changes_hash[column_name]   = self.send("#{column_name}_change") if self.send("#{column_name}_changed?")  
+          changes_hash[column_name] ||= [nil, self.send(column_name)] if self.new_record? && self.send(column_name).present?
           changes_hash
-        }
-        new_dirty_history.map { |col,vals| 
-          DirtyHistoryRecord.new  :creator      => (self.creator_for_dirty_history rescue nil),
-                                  :column_name  => col,
-                                  :column_type  => self.class.columns_hash[col.to_s].type,
-                                  :old_value    => vals[0],
-                                  :new_value    => vals[1]
-        }.each { |dirty_history_record| self.dirty_history_records << dirty_history_record }
+        end  
+
+        self.initialize_dirty_history = self.new_record?
+        return true
       end    
+      
+      def save_dirty_history     
+        self.dirty_history_changes.each do |column_name,vals|       
+          add_dirty_history_record column_name, vals[0], vals[1], :creator => self.creator_for_dirty_history
+        end 
+      end
+      
+      def add_dirty_history_record column_name, old_value, new_value, options={}    
+        creator = options[:creator] || self.creator_for_dirty_history
+        
+        dhr_attributes = { 
+          :object       => self,
+          :column_name  => column_name,
+          :column_type  => self.class.columns_hash[column_name.to_s].type,
+          :old_value    => old_value,
+          :new_value    => new_value,
+          :creator      => creator
+        }               
+        dhr_attributes[:created_at] = options[:created_at] if options[:created_at]
+        self.dirty_history_records << DirtyHistoryRecord.new(dhr_attributes)
+      end
+      
     end # ObjectInstanceMethods
 
     module CreatorInstanceMethods
@@ -86,7 +114,7 @@ module DirtyHistory
 
   end # Mixin
   
-end  # DirtyHistory
+end # DirtyHistory
 
 
 ActiveRecord::Base.send :include, DirtyHistory::Mixin
