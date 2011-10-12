@@ -4,10 +4,12 @@ class DirtyHistoryRecord < ActiveRecord::Base
 
   validates_presence_of :old_value,   :unless => proc { |record| record.object.initialize_dirty_history }
   validates_presence_of :object_type, :object_id, :column_name, :column_type, :new_value
-  
+
   scope :created_by,      lambda { |creator| where(:creator_id => creator.id, :creator_type => creator.class.name) }
   scope :for_object_type, lambda { |object_type| where(:object_type => object_type.to_s.classify) }
-    
+
+  acts_as_paranoid
+      
   [:new_value, :old_value].each do |attribute|
     define_method "#{attribute}" do 
       val_to_col_type(attribute)
@@ -16,8 +18,8 @@ class DirtyHistoryRecord < ActiveRecord::Base
       self[attribute] = val.nil? ? nil : val.to_s
       instance_variable_set "@#{attribute}", val
     end
-  end 
-  
+  end       
+    
   private
   
   def val_to_col_type attribute
