@@ -101,8 +101,10 @@ module DirtyHistory
           :old_value    => old_value,
           :new_value    => new_value,
           :creator      => creator
-        }               
-        dhr_attributes[:created_at] = options[:created_at] if options[:created_at]
+        }                                  
+                                                                       
+        dhr_attributes[:revised_created_at] = options[:revised_created_at] if options[:revised_created_at]
+        
         self.dirty_history_records << DirtyHistoryRecord.new(dhr_attributes)
       end
       

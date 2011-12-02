@@ -20,7 +20,12 @@ class DirtyHistoryRecord < ActiveRecord::Base
       instance_variable_set "@#{attribute}", val
     end
   end       
-    
+       
+  def action_timestamp                           
+    # use revised_created_at field to update the timestamp for the dirty history action while retaining data integrity
+    self[:revised_created_at] || self[:created_at]
+  end            
+  
   private
   
   def val_to_col_type attribute
