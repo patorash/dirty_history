@@ -22,7 +22,8 @@ class DirtyHistoryRecord < ActiveRecord::Base
   end       
        
   def action_timestamp                           
-    # use revised_created_at field to update the timestamp for the dirty history action while retaining data integrity
+    # use revised_created_at field to update the timestamp for
+    # the dirty history action while retaining data integrity
     self[:revised_created_at] || self[:created_at]
   end            
   
