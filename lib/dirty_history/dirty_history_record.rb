@@ -7,6 +7,7 @@ class DirtyHistoryRecord < ActiveRecord::Base
 
   scope :created_by,      lambda { |creator| where(:creator_id => creator.id, :creator_type => creator.class.name) }
   scope :for_object_type, lambda { |object_type| where(:object_type => object_type.to_s.classify) }
+  scope :for_attribute,   lambda { |attribute| where(:column_name => attribute.to_s) }
 
   acts_as_paranoid
       

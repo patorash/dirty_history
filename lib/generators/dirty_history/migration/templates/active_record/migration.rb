@@ -9,6 +9,7 @@ class CreateDirtyHistoryRecords < ActiveRecord::Migration
       t.text       :new_value
     
       t.datetime   :created_at
+      t.datetime   :updated_at
       t.datetime   :deleted_at
     end
     add_index :dirty_history_records, [:creator_id, :creator_type]
