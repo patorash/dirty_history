@@ -2,12 +2,14 @@ class DirtyHistoryRecord < ActiveRecord::Base
   belongs_to :creator,  :polymorphic => true
   belongs_to :object,   :polymorphic => true
 
-  validates_presence_of :old_value,   :unless => proc { |record| record.object.initialize_dirty_history }
+  validates_presence_of :old_value,   :unless => proc { |record| record.performing_manual_update || record.object.initialize_dirty_history }
   validates_presence_of :object_type, :object_id, :column_name, :column_type, :new_value
 
   scope :created_by,      lambda { |creator| where(:creator_id => creator.id, :creator_type => creator.class.name) }
   scope :for_object_type, lambda { |object_type| where(:object_type => object_type.to_s.classify) }
   scope :for_attribute,   lambda { |attribute| where(:column_name => attribute.to_s) }
+  
+  attr_accessor :performing_manual_update
 
   acts_as_paranoid
       
