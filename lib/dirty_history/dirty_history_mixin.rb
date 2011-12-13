@@ -103,8 +103,13 @@ module DirtyHistory
           :old_value    => old_value,
           :new_value    => new_value,
           :creator      => creator
-        }               
-        dhr_attributes[:revised_created_at] = options[:revised_created_at] if options[:revised_created_at]
+        }  
+        
+        # attributes for manual updates
+        [:revised_created_at, :performing_manual_update].each do |attribute|
+          dhr_attributes[attribute] = options[attribute] if options[attribute]
+        end
+        
         self.dirty_history_records << DirtyHistoryRecord.new(dhr_attributes)
       end
       
