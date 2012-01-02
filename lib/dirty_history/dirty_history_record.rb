@@ -10,8 +10,6 @@ class DirtyHistoryRecord < ActiveRecord::Base
   scope :for_attribute,   lambda { |attribute| where(:column_name => attribute.to_s) }
   
   attr_accessor :performing_manual_update
-
-  acts_as_paranoid
       
   [:new_value, :old_value].each do |attribute|
     define_method "#{attribute}" do 
