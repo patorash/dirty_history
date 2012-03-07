@@ -1,5 +1,4 @@
 require "active_record"
-require 'rails3_acts_as_paranoid'
 
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 
