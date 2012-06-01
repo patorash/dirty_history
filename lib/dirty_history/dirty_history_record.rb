@@ -2,16 +2,13 @@ class DirtyHistoryRecord < ActiveRecord::Base
   belongs_to :creator,  :polymorphic => true
   belongs_to :object,   :polymorphic => true
 
-  validates_presence_of :old_value,   :unless => proc { |record| record.performing_manual_update || record.object.initialize_dirty_history }
   validates_presence_of :object_type, :object_id, :column_name, :column_type, :new_value
 
   scope :created_by,      lambda { |creator| where(["dirty_history_records.creator_id = ? AND dirty_history_records.creator_type = ?", creator.id, creator.class.name]) }
   scope :not_created_by,  lambda { |non_creator| where(["dirty_history_records.creator_id <> ? OR dirty_history_records.creator_type <> ?", non_creator.id, non_creator.class.name]) }
   scope :for_object_type, lambda { |object_type| where(:object_type => object_type.to_s.classify) }
   scope :for_attribute,   lambda { |attribute| where(:column_name => attribute.to_s) }
-  
-  attr_accessor :performing_manual_update
-      
+        
   [:new_value, :old_value].each do |attribute|
     define_method "#{attribute}" do 
       val_to_col_type(attribute)
