@@ -4,11 +4,19 @@ class DirtyHistoryRecord < ActiveRecord::Base
 
   validates_presence_of :object_type, :object_id, :column_name, :column_type, :new_value
 
-  scope :created_by,      lambda { |creator| where(["dirty_history_records.creator_id = ? AND dirty_history_records.creator_type = ?", creator.id, creator.class.name]) }
-  scope :not_created_by,  lambda { |non_creator| where(["dirty_history_records.creator_id <> ? OR dirty_history_records.creator_type <> ?", non_creator.id, non_creator.class.name]) }
-  scope :for_object_type, lambda { |object_type| where(:object_type => object_type.to_s.classify) }
-  scope :for_attribute,   lambda { |attribute| where(:column_name => attribute.to_s) }
-        
+  scope :created_by,            lambda { |creator| where(["dirty_history_records.creator_id = ? AND dirty_history_records.creator_type = ?", creator.id, creator.class.name]) }
+  scope :not_created_by,        lambda { |non_creator| where(["dirty_history_records.creator_id <> ? OR dirty_history_records.creator_type <> ?", non_creator.id, non_creator.class.name]) }
+  scope :for_object_type,       lambda { |object_type| where(:object_type => object_type.to_s.classify) }
+  scope :for_attribute,         lambda { |attribute| where(:column_name => attribute.to_s) }
+  scope :created_in_range,      lambda { |range| created_at_gte(range.first).created_at_lte(range.last) }
+  scope :created_at_gte,        lambda { |date| created_at_lte_or_gte(date,"gte") }
+  scope :created_at_lte,        lambda { |date| created_at_lte_or_gte(date,"lte") }
+  scope :created_at_lte_or_gte, lambda { |date, lte_or_gte| 
+    lte_or_gte = lte_or_gte.to_s == "lte" ? "<=" : ">="
+    where("((dirty_history_records.revised_created_at is NULL OR dirty_history_records.revised_created_at = '') AND created_at #{lte_or_gte} ?) " + 
+          " OR revised_created_at #{lte_or_gte} ?", date, date)
+  }
+
   [:new_value, :old_value].each do |attribute|
     define_method "#{attribute}" do 
       val_to_col_type(attribute)
