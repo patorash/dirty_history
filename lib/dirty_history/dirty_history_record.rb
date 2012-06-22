@@ -17,6 +17,12 @@ class DirtyHistoryRecord < ActiveRecord::Base
           " OR revised_created_at #{lte_or_gte} ?", date, date)
   }
 
+  scope :order_asc, lambda { order_by_action_timestamp("ASC") }
+  scope :order_desc, lambda { order_by_action_timestamp("DESC") }
+  scope :order_by_action_timestamp, lambda { |asc_or_desc|
+    order("if(revised_created_at IS NULL OR revised_created_at = '', created_at, revised_created_at) #{asc_or_desc}")
+  }
+
   [:new_value, :old_value].each do |attribute|
     define_method "#{attribute}" do 
       val_to_col_type(attribute)
