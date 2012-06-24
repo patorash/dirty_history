@@ -29,7 +29,7 @@ module DirtyHistory
         metaclass = (class << self; self; end)
         return if metaclass.included_modules.include?(DirtyHistory::Mixin::ObjectInstanceMethods)
 
-        has_many        :dirty_history_records, :as => :object    
+        has_many        :dirty_history_records, :as => :object, :dependent => :destroy
         before_save     :set_dirty_history_changes
         after_save      :save_dirty_history
         
