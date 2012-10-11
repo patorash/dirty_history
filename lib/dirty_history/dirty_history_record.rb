@@ -25,8 +25,7 @@ class DirtyHistoryRecord < ActiveRecord::Base
 
   attr_accessible :object, :object_id, :object_type,
                   :column_name, :column_type, :old_value, :new_value, 
-                  :creator, :creator_id, :creator_type, 
-                  :revised_created_at, :performing_manual_update
+                  :creator, :creator_id, :creator_type, :revised_created_at
 
   [:new_value, :old_value].each do |attribute|
     define_method "#{attribute}" do 
