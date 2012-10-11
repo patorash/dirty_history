@@ -23,9 +23,13 @@ class DirtyHistoryRecord < ActiveRecord::Base
     order("if(revised_created_at IS NULL OR revised_created_at = '', created_at, revised_created_at) #{asc_or_desc}")
   }
 
+
   attr_accessible :object, :object_id, :object_type,
                   :column_name, :column_type, :old_value, :new_value, 
                   :creator, :creator_id, :creator_type, :revised_created_at
+
+  attr_accessor   :performing_manual_update
+
 
   [:new_value, :old_value].each do |attribute|
     define_method "#{attribute}" do 
