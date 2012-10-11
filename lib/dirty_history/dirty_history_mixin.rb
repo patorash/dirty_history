@@ -104,13 +104,15 @@ module DirtyHistory
           :new_value    => new_value,
           :creator      => creator
         }  
+
+        dhr = DirtyHistoryRecord.new(dhr_attributes)
         
         # attributes for manual updates
         [:revised_created_at, :performing_manual_update].each do |attribute|
-          dhr_attributes[attribute] = options[attribute] if options[attribute]
+          dhr.send("#{attribute}=", options[attribute]) if options[attribute]
         end
         
-        self.dirty_history_records << DirtyHistoryRecord.new(dhr_attributes)
+        self.dirty_history_records << dhr
       end
       
     end # ObjectInstanceMethods
