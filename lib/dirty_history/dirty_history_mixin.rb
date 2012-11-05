@@ -30,9 +30,6 @@ module DirtyHistory
         return if metaclass.included_modules.include?(DirtyHistory::Mixin::ObjectInstanceMethods)
 
         has_many        :dirty_history_records, :as => :object, :dependent => :destroy
-        before_save     :set_dirty_history_changes
-        after_save      :save_dirty_history
-        
         attr_accessor   :dirty_history_changes, :initialize_dirty_history
         cattr_accessor  :dirty_history_columns  
 
@@ -40,6 +37,10 @@ module DirtyHistory
         self.dirty_history_columns ||= []
     
         if args.present?
+          
+          before_save     :set_dirty_history_changes
+          after_save      :save_dirty_history
+
           args.each do |arg| 
             if [String,Symbol].include?(arg.class)     
               arg = arg.to_sym
