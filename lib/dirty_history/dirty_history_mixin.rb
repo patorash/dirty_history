@@ -45,9 +45,6 @@ module DirtyHistory
             if [String,Symbol].include?(arg.class)     
               arg = arg.to_sym
               self.dirty_history_columns << arg unless self.dirty_history_columns.include?(arg)
-              send :define_method, "creator_for_dirty_history" do 
-                nil
-              end
             elsif arg.is_a?(Hash)                      
               creator_proc = arg.delete(:creator)
               send :define_method, "creator_for_dirty_history" do 
