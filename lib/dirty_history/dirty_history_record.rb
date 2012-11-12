@@ -7,7 +7,7 @@ class DirtyHistoryRecord < ActiveRecord::Base
   scope :created_by,            lambda { |creator| where(["dirty_history_records.creator_id = ? AND dirty_history_records.creator_type = ?", creator.id, creator.class.name]) }
   scope :not_created_by,        lambda { |non_creator| where(["dirty_history_records.creator_id <> ? OR dirty_history_records.creator_type <> ?", non_creator.id, non_creator.class.name]) }
   scope :for_object_type,       lambda { |object_type| where(:object_type => object_type.to_s.classify) }
-  scope :for_attribute,         lambda { |attribute| where(:column_name => attribute.to_s) }
+  scope :for_column,            lambda { |column| where(:column_name => column.to_s) }
   scope :created_in_range,      lambda { |range| created_at_gte(range.first).created_at_lte(range.last) }
   scope :created_at_gte,        lambda { |date| created_at_lte_or_gte(date,"gte") }
   scope :created_at_lte,        lambda { |date| created_at_lte_or_gte(date,"lte") }

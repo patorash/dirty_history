@@ -115,7 +115,17 @@ module DirtyHistory
         
         self.dirty_history_records << dhr
       end
-      
+
+      def history_for_column column, options={}
+        options[:sort] = true if options[:sort].blank?
+        
+        records = dirty_history_records.for_column(column)
+        records = records.send(*options[:scope]) if options[:scope]
+        records = records.order_asc if options[:sort]
+
+        options[:return_objects] ? records : records.map { |s| s.new_value }
+      end
+
     end # ObjectInstanceMethods
 
     module CreatorInstanceMethods
