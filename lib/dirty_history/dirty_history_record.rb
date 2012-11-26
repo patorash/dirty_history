@@ -13,14 +13,14 @@ class DirtyHistoryRecord < ActiveRecord::Base
   scope :created_at_lte,        lambda { |date| created_at_lte_or_gte(date,"lte") }
   scope :created_at_lte_or_gte, lambda { |date, lte_or_gte| 
     lte_or_gte = lte_or_gte.to_s == "lte" ? "<=" : ">="
-    where("((dirty_history_records.revised_created_at is NULL OR dirty_history_records.revised_created_at = '') AND created_at #{lte_or_gte} ?) " + 
-          " OR revised_created_at #{lte_or_gte} ?", date, date)
+    where("((dirty_history_records.revised_created_at is NULL OR dirty_history_records.revised_created_at = '') AND dirty_history_records.created_at #{lte_or_gte} ?) " + 
+          " OR dirty_history_records.revised_created_at #{lte_or_gte} ?", date, date)
   }
 
   scope :order_asc, lambda { order_by_action_timestamp("ASC") }
   scope :order_desc, lambda { order_by_action_timestamp("DESC") }
   scope :order_by_action_timestamp, lambda { |asc_or_desc|
-    order("if(revised_created_at IS NULL OR revised_created_at = '', created_at, revised_created_at) #{asc_or_desc}")
+    order("if(dirty_history_records.revised_created_at IS NULL OR dirty_history_records.revised_created_at = '', dirty_history_records.created_at, dirty_history_records.revised_created_at) #{asc_or_desc}")
   }
 
 
