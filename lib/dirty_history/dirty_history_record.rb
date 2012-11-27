@@ -4,23 +4,23 @@ class DirtyHistoryRecord < ActiveRecord::Base
 
   validates_presence_of :object_type, :object_id, :column_name, :column_type, :new_value
 
-  scope :created_by,            lambda { |creator| where(["dirty_history_records.creator_id = ? AND dirty_history_records.creator_type = ?", creator.id, creator.class.name]) }
-  scope :not_created_by,        lambda { |non_creator| where(["dirty_history_records.creator_id <> ? OR dirty_history_records.creator_type <> ?", non_creator.id, non_creator.class.name]) }
-  scope :for_object_type,       lambda { |object_type| where(:object_type => object_type.to_s.classify) }
-  scope :for_column,            lambda { |column| where(:column_name => column.to_s) }
+  scope :created_by,            lambda { |creator| where(["#{table_name}.creator_id = ? AND #{table_name}.creator_type = ?", creator.id, creator.class.name]) }
+  scope :not_created_by,        lambda { |non_creator| where(["#{table_name}.creator_id <> ? OR #{table_name}.creator_type <> ?", non_creator.id, non_creator.class.name]) }
+  scope :for_object_type,       lambda { |object_type| where(object_type: object_type.to_s.classify) }
+  scope :for_column,            lambda { |column| where(column_name: column.to_s) }
   scope :created_in_range,      lambda { |range| created_at_gte(range.first).created_at_lte(range.last) }
   scope :created_at_gte,        lambda { |date| created_at_lte_or_gte(date,"gte") }
   scope :created_at_lte,        lambda { |date| created_at_lte_or_gte(date,"lte") }
   scope :created_at_lte_or_gte, lambda { |date, lte_or_gte| 
     lte_or_gte = lte_or_gte.to_s == "lte" ? "<=" : ">="
-    where("((dirty_history_records.revised_created_at is NULL OR dirty_history_records.revised_created_at = '') AND dirty_history_records.created_at #{lte_or_gte} ?) " + 
-          " OR dirty_history_records.revised_created_at #{lte_or_gte} ?", date, date)
+    where("((#{table_name}.revised_created_at is NULL OR #{table_name}.revised_created_at = '') AND #{table_name}.created_at #{lte_or_gte} ?) " + 
+          " OR #{table_name}.revised_created_at #{lte_or_gte} ?", date, date)
   }
 
   scope :order_asc, lambda { order_by_action_timestamp("ASC") }
   scope :order_desc, lambda { order_by_action_timestamp("DESC") }
   scope :order_by_action_timestamp, lambda { |asc_or_desc|
-    order("if(dirty_history_records.revised_created_at IS NULL OR dirty_history_records.revised_created_at = '', dirty_history_records.created_at, dirty_history_records.revised_created_at) #{asc_or_desc}")
+    order("CASE WHEN (#{table_name}.revised_created_at IS NULL OR #{table_name}.revised_created_at = '') then #{table_name}.created_at else #{table_name}.revised_created_at END #{asc_or_desc}")
   }
 
 
